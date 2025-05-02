@@ -1,0 +1,87 @@
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./../static/homestyle.css">
+    <link rel="icon" href="./../static/logo.png">
+    <title>Mekercs Chat</title>
+</head>
+<body>
+    <table width="800px" align="center">
+        <tr>
+            <td><img src="./../static/logo.png" alt="Vörös panda!" width="100px"></td>
+            <td align="right">
+                <div id="udvozlo">
+                <h3 >Üdv, {{user}}!</h3></div>
+                <a href="/logout">Kijelentkezés</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                    <div id="uzenetek" style="height:700px; overflow-y:scroll; padding:5px; text-align: left; max-width: 800px">
+                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const uzenetInput = document.getElementById('uzenet');
+                            const uzenetekDiv = document.getElementById('uzenetek');
+                    
+                            uzenetInput.addEventListener('keydown', e => {
+                                if (e.key === 'Enter' && uzenetInput.value.trim()) {
+                                    kuldes(uzenetInput.value.trim());
+                                    uzenetInput.value = '';
+                                }
+                            });
+                    
+                            async function frissit() {
+                                try {
+                                    const voltLegalul = uzenetekDiv.scrollTop + uzenetekDiv.clientHeight >= uzenetekDiv.scrollHeight - 10;
+                    
+                                    const res = await fetch('/uzenetek');
+                                    if (!res.ok) throw new Error('Hiba a lekérésnél');
+                                    const adatok = await res.json();
+                    
+                                    uzenetekDiv.innerHTML = '';
+                                    adatok.forEach(({ nev, uzenet }) => {
+                                        const p = document.createElement('p');
+                                        p.textContent = `${nev}: ${uzenet}`;
+                                        uzenetekDiv.appendChild(p);
+                                    });
+                    
+                                    if (voltLegalul) {
+                                        uzenetekDiv.scrollTop = uzenetekDiv.scrollHeight;
+                                    }
+                                } catch (err) {
+                                    console.error('Hiba az üzenetek frissítésénél:', err);
+                                }
+                            }
+                    
+                            async function kuldes(uzenet) {
+                                try {
+                                    await fetch('/kulduzenet', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ uzenet })
+                                    });
+                                    frissit();
+                                } catch (err) {
+                                    console.error('Hiba az üzenet küldésénél:', err);
+                                }
+                            }
+                    
+                            setInterval(frissit, 1000);
+                            frissit();
+                            uzenetInput.focus();
+                        });
+                    </script>
+            </td>
+            </td>
+        </tr>
+    </table>
+    <div id="send">
+        <input type="text" id="uzenet" placeholder="Írj ide...">
+    </div>
+</body>
+</html>

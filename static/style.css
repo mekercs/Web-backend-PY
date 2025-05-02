@@ -1,0 +1,81 @@
+@font-face {
+    font-family: spectral;
+    src: url(fonts/Spectral-Regular.ttf);
+}
+
+body {
+    background-color: rgb(34, 34, 34);
+    font-family: spectral, 'Arial';
+}
+
+hr {
+    border: 1px solid rgb(29, 205, 159);
+}
+
+a {
+    color: rgb(29, 205, 159);
+    text-decoration: none;
+    font-size: 12px;
+    transition: 0.2s ease-in;
+}
+
+a:hover {
+    transition: 0.2s ease-out;
+    text-shadow: 0px 0px 10px rgb(29, 205, 159);
+}
+
+input {
+    color: rgb(29, 205, 159);
+    margin-bottom: 10px;
+    background-color: rgb(34, 34, 34);
+    border: 0px;
+    border-bottom: 1px solid rgb(29, 205, 159);
+    border-radius: 10px;
+    padding: 10px;
+    width: 70%;
+    transition: 0.2s ease-in;
+}
+
+label, input {
+    display: inline-block;
+}
+
+label {
+    width: 25%;
+}
+
+input:focus {
+    transition: 0.2s ease-out;
+    outline: none;
+    box-shadow: 0px 2px 0px rgb(29, 205, 159);
+}
+
+#submit {
+    border: 0px;
+    width: 45%;
+    margin-top: 10px;
+    border-radius: 5px;
+    outline: 1px solid rgb(29, 205, 159);
+    transition: 0.2s ease-out;
+}
+
+#submit:hover {
+    transition: 0.2s ease-in;
+    color: black;
+    background-color: rgb(29, 205, 159);
+    box-shadow: 0px 0px 10px rgb(29, 205, 159);
+}
+
+form {
+    text-align: center;
+    color: rgb(29, 205, 159);
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+}
+
+#header {
+    text-align: center;
+    color: rgb(29, 205, 159);
+    text-shadow: 1px 1px 10px rgb(29, 205, 159);
+}
