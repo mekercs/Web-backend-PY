@@ -1,78 +1,114 @@
 # Web-backend-PY 🌐
 
-## Rövid leírás  
-Ez a projekt egy **Python Flask alapú webalkalmazás**, amit én készítettem.  
-A célja egy **felhasználói rendszer** létrehozása MongoDB adatbázissal, ami lehetővé teszi a regisztrációt, bejelentkezést, üzenetküldést és a session-kezelést.  
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Flask](https://img.shields.io/badge/Flask-2.3-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-4.4-brightgreen)
 
-## ⚙️ Fő funkciók
-- **Regisztráció**: új felhasználók hozzáadása az adatbázishoz, ellenőrizve az email és felhasználónév egyediségét.  
-- **Bejelentkezés**: session-alapú autentikáció.  
-- **Üzenetküldés**: felhasználók üzeneteket küldhetnek, amiket a MongoDB tárol.  
-- **Üzenetek lekérése**: JSON formátumban, időrendi sorrendben.  
-- **Logout**: session törlése és visszairányítás a főoldalra.  
+## Leírás
+Ez egy **Flask alapú webalkalmazás**, amit én készítettem.  
+Lehetővé teszi a felhasználói regisztrációt, bejelentkezést, üzenetküldést és session-kezelést MongoDB adatbázissal.
 
-## 🛠️ Hogyan működik
-1. **Flask app létrehozása** és MongoDB kapcsolat:  
-   ```python
-   app = Flask(__name__)
-   app.secret_key = '123456789'
-   client = pymongo.MongoClient("mongodb://localhost:27017")
-   db = client["User"]
-   users = db["Log/pass"]
-   uzenetek = db["uzenetek"]
-Oldalak:
+A játékos/jelentkező felhasználók:  
+- Regisztrálhatnak és bejelentkezhetnek.  
+- Küldhetnek üzeneteket, amiket az adatbázisban tárol a rendszer.  
+- Böngészőben láthatják az üzeneteket JSON formátumban.
 
-/ → index.html (bejelentkezés)
+---
 
-/index2 → index2.html (regisztráció)
+## Fő funkciók
+- ✅ **Felhasználói regisztráció**: ellenőrzi az email és felhasználónév egyediségét.  
+- ✅ **Bejelentkezés**: session-kezeléssel biztosítja a belépett felhasználó azonosítását.  
+- ✅ **Üzenetküldés**: POST JSON formátumban (`/kulduzenet`).  
+- ✅ **Üzenetek lekérése**: GET `/uzenetek` — JSON formátum, időrend szerint.  
+- ✅ **Logout**: session törlése és visszairányítás a főoldalra.
 
-/home → home.html (bejelentkezett felhasználó)
+---
 
-Regisztráció: ellenőrzi, hogy az email vagy felhasználónév már létezik-e, majd új felhasználót ad az adatbázishoz.
+## Telepítés és futtatás
 
-Bejelentkezés: session-t hoz létre, ha a felhasználó és a jelszó helyes.
-
-Üzenetküldés: POST /kulduzenet, a JSON-ban érkező üzenetet menti a MongoDB-be nev, uzenet, ido mezőkkel.
-
-Üzenetek lekérése: GET /uzenetek, visszaadja a felhasználó nevét és az üzenetet időrendben JSON-ban.
-
-Logout: session törlése és visszairányítás a főoldalra.
-
-🚀 Telepítés és futtatás
-Klónozd a repót:
-
-bash
-Kód másolása
+### 1️⃣ Klónozd a repót
+```bash
 git clone https://github.com/mekercs/Web-backend-PY.git
-Telepítsd a függőségeket:
-
+cd Web-backend-PY
+2️⃣ Telepítsd a függőségeket
 bash
 Kód másolása
 pip install flask pymongo
+3️⃣ Ellenőrizd a MongoDB-t
 Győződj meg róla, hogy a MongoDB fut a localhost:27017 címen.
 
-Futtasd a Flask alkalmazást:
-
+4️⃣ Futtatás
 bash
 Kód másolása
 python app.py
-Nyisd meg a böngészőt:
-
+5️⃣ Böngészőben
 arduino
 Kód másolása
 http://localhost/
-📦 Projekt felépítése
-app.py – a teljes backend logika (Flask + MongoDB + session).
-
-templates/ – HTML fájlok (index.html, index2.html, home.html).
-
-static/ (opcionális) – CSS, JS fájlok.
-
-MongoDB gyűjtemények:
-
+Projekt felépítése
+csharp
+Kód másolása
+Web-backend-PY/
+│
+├─ app.py             # Flask backend logika
+├─ templates/         # HTML fájlok
+│   ├─ index.html
+│   ├─ index2.html
+│   └─ home.html
+└─ static/            # (opcionális) CSS, JS fájlok
+MongoDB gyűjtemények
 Log/pass → felhasználók
 
 uzenetek → küldött üzenetek
 
-👤 Készítette
+Hogyan működik a backend
+Flask app létrehozása, secret key beállítása:
+
+python
+Kód másolása
+app = Flask(__name__)
+app.secret_key = '123456789'
+MongoDB kapcsolat létrehozása:
+
+python
+Kód másolása
+client = pymongo.MongoClient("mongodb://localhost:27017")
+db = client["User"]
+users = db["Log/pass"]
+uzenetek = db["uzenetek"]
+Oldalak:
+
+/ → Bejelentkezés (index.html)
+
+/index2 → Regisztráció (index2.html)
+
+/home → Bejelentkezett felhasználó (home.html)
+
+Regisztráció:
+
+Ellenőrzi az email és felhasználónév egyediségét.
+
+Új felhasználót ad hozzá a users gyűjteményhez.
+
+Bejelentkezés:
+
+Ellenőrzi az email és jelszó párost.
+
+Létrehoz egy session-t a felhasználóhoz.
+
+Üzenetküldés:
+
+/kulduzenet POST: JSON tartalmazza a uzenet mezőt.
+
+Mentés a uzenetek gyűjteménybe, időbélyeggel.
+
+Üzenetek lekérése:
+
+/uzenetek GET: visszaadja a felhasználó nevét és az üzenetet JSON-ban, időrend szerint.
+
+Logout:
+
+Session törlése, visszairányítás a főoldalra.
+
+Készítette
 mekercs
